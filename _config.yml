@@ -1,0 +1,2 @@
+# GitHub Pages (Jekyll) assembles shared header/footer from _includes/.
+exclude: [src, docs, build.py, README.md, SHA256SUMS, "*.py"]
