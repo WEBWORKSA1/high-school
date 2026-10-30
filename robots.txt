@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /thank-you/
+Disallow: /search/
+
+Sitemap: https://high.school/sitemap.xml
