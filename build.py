@@ -15,12 +15,24 @@ sys.path.insert(0, os.path.join(HERE, "src"))
 import kit, subjects, testprep, tools, college, guides, core, community, legal  # noqa: E402
 
 
+OUT = HERE
+JEKYLL = "--jekyll" in sys.argv  # emit pages with {% include %} chrome; GitHub Pages' built-in Jekyll assembles them
+
+
 def write(name, text):
-    with open(os.path.join(HERE, name), "w", encoding="utf-8") as f:
+    with open(os.path.join(OUT, name), "w", encoding="utf-8") as f:
         f.write(text)
 
 
 def main():
+    global OUT
+    if JEKYLL:
+        i = sys.argv.index("--jekyll")
+        OUT = os.path.abspath(sys.argv[i + 1]) if len(sys.argv) > i + 1 else HERE
+        kit.JK, kit.OUT = True, OUT
+        kit.write_includes(OUT)
+        write("_config.yml", "# GitHub Pages (Jekyll) assembles shared header/footer from _includes/.\n"
+              "exclude: [src, docs, build.py, README.md, SHA256SUMS, \"*.py\"]\n")
     for mod in (core, subjects, testprep, tools, college, guides, community, legal):
         mod.build()
 
@@ -33,11 +45,13 @@ def main():
     write("robots.txt", f"User-agent: *\nAllow: /\nDisallow: /thank-you/\nDisallow: /search/\n\nSitemap: {kit.BASE_URL}/sitemap.xml\n")
     write("ads.txt", "google.com, pub-6620975821265271, DIRECT, f08c47fec0942fa0\n")
     write("search-index.json", json.dumps([{k: p[k] for k in ("u", "t", "d", "k")} for p in pages], ensure_ascii=False))
-    write(".nojekyll", "")
+    if not JEKYLL:
+        write(".nojekyll", "")
     write("manifest.webmanifest", json.dumps({
         "name": "High.School", "short_name": "High.School", "start_url": "./", "display": "standalone",
         "background_color": "#fbfaf5", "theme_color": "#14213d",
-        "icons": [{"src": "assets/img/icon-192.png", "sizes": "192x192", "type": "image/png"},
+        "icons": [{"src": "assets/img/favicon.svg", "sizes": "any", "type": "image/svg+xml"},
+                  {"src": "assets/img/icon-192.png", "sizes": "192x192", "type": "image/png"},
                   {"src": "assets/img/icon-512.png", "sizes": "512x512", "type": "image/png"}]}, indent=2))
     print(f"Built {len(pages)} indexed pages (+ search, thank-you, 404).")
 
