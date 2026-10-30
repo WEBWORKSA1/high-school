@@ -1,0 +1,9 @@
+<div class="lead-box"><h4>Get a free match</h4><p>Tutoring, test prep, college counseling or online-diploma advice — matched to your goal.</p>
+<form class="form" data-form data-thanks="thank-you/"><input type="hidden" name="_subject" value="New High.School lead — {{ include.source }}"><input type="hidden" name="Lead source" value="{{ include.source }}">
+<input class="hp" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+<div class="field"><label for="ml-{{ include.mid }}-n">Name</label><input id="ml-{{ include.mid }}-n" type="text" name="Name" required autocomplete="name"></div>
+<div class="field"><label for="ml-{{ include.mid }}-e">Email</label><input id="ml-{{ include.mid }}-e" type="email" name="Email" required autocomplete="email"></div>
+<div class="field"><label for="ml-{{ include.mid }}-r">I am</label><select id="ml-{{ include.mid }}-r" name="I am" required><option value="">Choose…</option><option>Parent / guardian</option><option>Student 13–17</option><option>Adult learner 18+</option><option>Educator</option><option>Under 13</option></select></div>
+<div class="field"><label for="ml-{{ include.mid }}-i">I need help with</label><select id="ml-{{ include.mid }}-i" name="I need"><option>{{ include.need }}</option><option>Tutoring</option><option>Test prep (SAT/ACT/AP)</option><option>College counseling</option><option>Online diploma / credit recovery</option><option>Scholarship alerts</option></select></div>
+<label class="check"><input type="checkbox" name="Consent" value="Yes" required> <span>I agree to be contacted about my request. Students under 18: a parent/guardian has approved this.</span></label>
+<button class="btn btn-primary btn-block" type="submit">Send my request</button><p class="form-status" aria-live="polite"></p></form></div>
