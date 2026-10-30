@@ -21,6 +21,8 @@ UPDATED = TODAY.strftime("%B %Y")
 OUT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 PAGES = []  # registry for sitemap + search
+JK = False   # Jekyll mode: shared chrome emitted as {% include %} tags (GitHub Pages builds them)
+import re as _re
 
 e = html.escape
 
@@ -70,21 +72,34 @@ def ad(kind="in_article"):
             f'{fmt} data-ad-client="{PUB}" data-ad-slot="{slot}"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({{}});</script></div>')
 
 
-def lead_band(title="Want a personal game plan?", text="Tell us your goal and we’ll match you with free resources and vetted tutoring, test-prep or college-counseling options. Takes about 60 seconds.", need=""):
-    q = f"?need={quote(need)}" if need else ""
+LB_T = "Want a personal game plan?"
+LB_X = "Tell us your goal and we’ll match you with free resources and vetted tutoring, test-prep or college-counseling options. Takes about 60 seconds."
+
+
+def lead_band(title=LB_T, text=LB_X, need="", _q=None):
+    if JK and _q is None and title == LB_T and text == LB_X:
+        return '{% include leadband.html' + (f' needq="{quote(need)}"' if need else '') + ' %}'
+    q = _q if _q is not None else (f"?need={quote(need)}" if need else "")
     return (f'<section><div class="band"><div class="grid g2" style="align-items:center"><div><span class="eyebrow" style="background:#24345e;color:var(--hl)">Free · No obligation</span>'
             f'<h2>{title}</h2><p>{text}</p></div><div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end">'
             f'<a class="btn btn-primary" href="@@/get-matched/{q}">Get matched free →</a><a class="btn btn-ghost" href="@@/tools/">Try the free tools</a></div></div></div></section>')
 
 
-def mini_lead(source="Inline", need="Tutoring"):
+def mini_lead(source="Inline", need="Tutoring", _mid=None):
+    mid = _mid or _re.sub(r"[^a-z0-9]+", "-", source.lower()).strip("-")
+    if JK and _mid is None:
+        return f'{{% include minilead.html source="{e(source)}" need="{e(need)}" mid="{mid}" %}}'
+    if _mid is not None:
+        es, en = source, need
+    else:
+        es, en = e(source), e(need)
     return f'''<div class="lead-box"><h4>Get a free match</h4><p>Tutoring, test prep, college counseling or online-diploma advice — matched to your goal.</p>
-<form class="form" data-form data-thanks="thank-you/"><input type="hidden" name="_subject" value="New High.School lead — {e(source)}"><input type="hidden" name="Lead source" value="{e(source)}">
+<form class="form" data-form data-thanks="thank-you/"><input type="hidden" name="_subject" value="New High.School lead — {es}"><input type="hidden" name="Lead source" value="{es}">
 <input class="hp" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
-<div class="field"><label for="ml-{id(source)}-n">Name</label><input id="ml-{id(source)}-n" type="text" name="Name" required autocomplete="name"></div>
-<div class="field"><label for="ml-{id(source)}-e">Email</label><input id="ml-{id(source)}-e" type="email" name="Email" required autocomplete="email"></div>
-<div class="field"><label for="ml-{id(source)}-r">I am</label><select id="ml-{id(source)}-r" name="I am" required><option value="">Choose…</option><option>Parent / guardian</option><option>Student 13–17</option><option>Adult learner 18+</option><option>Educator</option><option>Under 13</option></select></div>
-<div class="field"><label for="ml-{id(source)}-i">I need help with</label><select id="ml-{id(source)}-i" name="I need"><option>{e(need)}</option><option>Tutoring</option><option>Test prep (SAT/ACT/AP)</option><option>College counseling</option><option>Online diploma / credit recovery</option><option>Scholarship alerts</option></select></div>
+<div class="field"><label for="ml-{mid}-n">Name</label><input id="ml-{mid}-n" type="text" name="Name" required autocomplete="name"></div>
+<div class="field"><label for="ml-{mid}-e">Email</label><input id="ml-{mid}-e" type="email" name="Email" required autocomplete="email"></div>
+<div class="field"><label for="ml-{mid}-r">I am</label><select id="ml-{mid}-r" name="I am" required><option value="">Choose…</option><option>Parent / guardian</option><option>Student 13–17</option><option>Adult learner 18+</option><option>Educator</option><option>Under 13</option></select></div>
+<div class="field"><label for="ml-{mid}-i">I need help with</label><select id="ml-{mid}-i" name="I need"><option>{en}</option><option>Tutoring</option><option>Test prep (SAT/ACT/AP)</option><option>College counseling</option><option>Online diploma / credit recovery</option><option>Scholarship alerts</option></select></div>
 <label class="check"><input type="checkbox" name="Consent" value="Yes" required> <span>I agree to be contacted about my request. Students under 18: a parent/guardian has approved this.</span></label>
 <button class="btn btn-primary btn-block" type="submit">Send my request</button><p class="form-status" aria-live="polite"></p></form></div>'''
 
@@ -181,6 +196,23 @@ def footer():
 <div class="toast" id="toast" role="status" aria-live="polite"></div>'''
 
 
+NOADS = "<!-- AdSense intentionally omitted: no-content utility page (AdSense policy) -->"
+
+
+def head_static(ads=True, _tpl=False):
+    if JK and not _tpl:
+        return '{% include head.html' + ('' if ads else ' ads="0"') + ' %}'
+    adtag = ('{% if include.ads == "0" %}' + NOADS + '{% else %}' + ADSENSE + '{% endif %}') if _tpl else (ADSENSE if ads else NOADS)
+    return f'''<meta name="theme-color" content="#14213d">
+<meta name="google-adsense-account" content="{PUB}">
+<link rel="icon" href="@@/assets/img/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="@@/assets/img/icon-192.png"><link rel="manifest" href="@@/manifest.webmanifest">
+<script>try{{var t=localStorage.getItem('hs-theme');if(t)document.documentElement.setAttribute('data-theme',t);if(localStorage.getItem('hs-consent')==='reject'){{(window.adsbygoogle=window.adsbygoogle||[]).requestNonPersonalizedAds=1}}}}catch(e){{}}</script>
+{adtag}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="@@/assets/css/site.css">'''
+
+
 # ---------------------------------------------------------------- page writer
 def page(path, title, desc, body, crumbs=None, schema=None, keywords="", tools=False, noslide=False, index=True, og_type="website", full_title=None, ads=True):
     R = root_prefix(path)
@@ -216,26 +248,21 @@ def page(path, title, desc, body, crumbs=None, schema=None, keywords="", tools=F
 <link rel="canonical" href="{url}">
 <meta property="og:type" content="{og_type}"><meta property="og:site_name" content="{SITE}"><meta property="og:title" content="{e(ft)}"><meta property="og:description" content="{e(desc)}"><meta property="og:url" content="{url}"><meta property="og:image" content="{BASE_URL}/assets/img/og.png">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{e(ft)}"><meta name="twitter:description" content="{e(desc)}"><meta name="twitter:image" content="{BASE_URL}/assets/img/og.png">
-<meta name="theme-color" content="#14213d">
-<meta name="google-adsense-account" content="{PUB}">
-<link rel="icon" href="@@/assets/img/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="@@/assets/img/icon-192.png"><link rel="manifest" href="@@/manifest.webmanifest">
-<script>try{{var t=localStorage.getItem('hs-theme');if(t)document.documentElement.setAttribute('data-theme',t);if(localStorage.getItem('hs-consent')==='reject'){{(window.adsbygoogle=window.adsbygoogle||[]).requestNonPersonalizedAds=1}}}}catch(e){{}}</script>
-{ADSENSE if ads else "<!-- AdSense intentionally omitted: no-content utility page (AdSense policy) -->"}
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="@@/assets/css/site.css">
+{head_static(ads)}
 {ld}
 </head>
 <body data-root="{R}"{' data-noslide' if noslide else ''}>
-{header()}
+{"{% include header.html %}" if JK else header()}
 <main id="main">
 {body}
 </main>
-{footer()}
+{"{% include footer.html %}" if JK else footer()}
 <script src="@@/assets/js/site.js" defer></script>{tools_js}
 </body>
 </html>'''
     doc = doc.replace("@@/", R)
+    if JK:
+        doc = f'---\nr: "{R}"\n---\n' + doc
     fp = os.path.join(OUT, path) if path.endswith(".html") else os.path.join(OUT, path.strip("/"), "index.html")
     os.makedirs(os.path.dirname(fp), exist_ok=True)
     with open(fp, "w", encoding="utf-8") as f:
@@ -243,3 +270,22 @@ def page(path, title, desc, body, crumbs=None, schema=None, keywords="", tools=F
     if index:
         PAGES.append({"u": path.strip("/") + ("/" if path.strip("/") and not path.endswith(".html") else ""), "t": title, "d": desc, "k": keywords, "loc": url})
     return fp
+
+
+def write_includes(outdir):
+    """Write Jekyll _includes for JK mode (shared chrome, rendered by GitHub Pages)."""
+    d = os.path.join(outdir, "_includes")
+    os.makedirs(d, exist_ok=True)
+    global JK
+    was, JK = JK, False
+    parts = {
+        "header.html": header(),
+        "footer.html": footer(),
+        "head.html": head_static(True, _tpl=True),
+        "minilead.html": mini_lead("{{ include.source }}", "{{ include.need }}", "{{ include.mid }}"),
+        "leadband.html": lead_band(_q="{% if include.needq %}?need={{ include.needq }}{% endif %}"),
+    }
+    JK = was
+    for n, t in parts.items():
+        with open(os.path.join(d, n), "w", encoding="utf-8") as f:
+            f.write(t.replace("@@/", "{{ page.r }}"))
