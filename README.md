@@ -6,8 +6,13 @@ Static HTML/CSS/vanilla JS that GitHub Pages hosts for free from the `main` bran
 
 ## Build
 ```bash
-python3 build.py      # regenerates every page, sitemap.xml, robots.txt, ads.txt, search-index.json
+python3 build.py                 # plain static HTML: every page fully assembled (+ .nojekyll)
+python3 build.py --jekyll OUT    # same pages, with header/footer/head as {% include %} tags
 ```
+**How the repo is published today:** the repo contains the `--jekyll` output (`_includes/`, `_config.yml` and the page files). GitHub Pages' built-in Jekyll assembles the pages on every push, and the result is byte-identical to the plain build, so no workflow is needed.
+
+**Optional, for auto-builds:** add `.github/workflows/build.yml` (the file is in `docs/build-workflow.yml`; copy it through GitHub's web UI, since API integrations can't write workflow files). After that, each push to `src/` regenerates the plain HTML and the PNG icons on GitHub.
+
 Content lives in `src/*.py`. The shared template, header, footer and components are in `src/kit.py`. Every internal link is relative, so the site works at `https://webworksa1.github.io/high-school/` and on `https://high.school/`.
 
 ## Configure
