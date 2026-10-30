@@ -1,0 +1,49 @@
+---
+r: "../"
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Support High.School — Donate | High.School</title>
+<meta name="description" content="Donate to keep High.School free for every student. Support operations, promotion, hiring talent and student contest prizes — one-time or monthly.">
+<meta name="keywords" content="donate, support education, sponsor student prize">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="https://high.school/support/">
+<meta property="og:type" content="website"><meta property="og:site_name" content="High.School"><meta property="og:title" content="Support High.School — Donate | High.School"><meta property="og:description" content="Donate to keep High.School free for every student. Support operations, promotion, hiring talent and student contest prizes — one-time or monthly."><meta property="og:url" content="https://high.school/support/"><meta property="og:image" content="https://high.school/assets/img/og.png">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Support High.School — Donate | High.School"><meta name="twitter:description" content="Donate to keep High.School free for every student. Support operations, promotion, hiring talent and student contest prizes — one-time or monthly."><meta name="twitter:image" content="https://high.school/assets/img/og.png">
+{% include head.html %}
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://high.school/"}, {"@type": "ListItem", "position": 2, "name": "Support Us", "item": "https://high.school/support/"}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is my donation tax-deductible?", "acceptedAnswer": {"@type": "Answer", "text": "High.School is not currently a registered charity, so donations are not tax-deductible. They directly fund the site’s operations, content and student prizes."}}, {"@type": "Question", "name": "Can my business sponsor instead?", "acceptedAnswer": {"@type": "Answer", "text": "Yes — sponsorships come with recognition on contests, tools or newsletters. See Advertise & Partner."}}, {"@type": "Question", "name": "Can I give in another way?", "acceptedAnswer": {"@type": "Answer", "text": "Absolutely: share High.School with a student or teacher, report errors, contribute a guide, or volunteer as a student ambassador."}}]}</script>
+</head>
+<body data-root="../" data-noslide>
+{% include header.html %}
+<main id="main">
+<header class="page-hero"><div class="wrap"><nav class="crumbs" aria-label="Breadcrumb"><a href="../">Home</a><span>/</span><span aria-current="page">Support Us</span></nav><span class="eyebrow">Reader-supported</span><h1>Support High.School</h1><p class="lead">High.School is free for every student. Your support keeps it that way — and funds new guides, tools, student contests and the people who build them.</p></div></header><div class="wrap"><div class="layout"><div>
+<div class="tool" id="donate-tool"><h2 style="margin-top:0">Choose your support</h2>
+<div class="toggle" role="group" aria-label="Frequency"><button type="button" class="active">One-time</button><button type="button">Monthly</button></div>
+<div class="tiers" style="margin-top:14px"><button type="button" class="tier" data-amt="5"><b>$5</b><span class="small">Buys a student a study guide</span></button><button type="button" class="tier active" data-amt="15"><b>$15</b><span class="small">Funds a new practice quiz</span></button><button type="button" class="tier" data-amt="50"><b>$50</b><span class="small">Adds to a contest prize</span></button><button type="button" class="tier" data-amt="100"><b>$100</b><span class="small">Sponsors a new tool feature</span></button></div>
+<div class="field" style="margin-top:12px"><label for="dn-custom">Or enter a custom amount (USD)</label><input id="dn-custom" type="number" min="1" placeholder="e.g. 25"></div>
+<p style="font-size:1.1rem">You’re giving <strong id="dn-label">$15</strong></p>
+<div style="display:flex;gap:10px;flex-wrap:wrap"><a href="#pledge" class="btn btn-primary" data-pay="paypal">Donate with PayPal</a><a href="#pledge" class="btn btn-ink" data-pay="stripe">Donate by card</a><a href="#pledge" class="btn btn-hl" data-pay="bmc">☕ Buy us a coffee</a></div>
+<p class="small muted" style="margin-top:8px">Secure payments are processed by the provider you choose. We never see or store card details.</p></div>
+<h2>Where your money goes</h2><div class="alloc card"><div><span>Operations & hosting</span><i style="width:30%"></i><b>30%</b></div><div><span>Promotion & marketing</span><i style="width:20%;background:var(--violet)"></i><b>20%</b></div><div><span>Hiring writers, tutors & creators</span><i style="width:30%;background:var(--coral)"></i><b>30%</b></div><div><span>Contest prizes</span><i style="width:20%;background:var(--hl)"></i><b>20%</b></div></div>
+<p class="small muted">Target allocation; we publish an annual summary of how support was spent.</p>
+<h2 id="pledge">Pledge form</h2><p>Prefer an invoice, bank transfer or a larger gift — or want to sponsor a specific prize? Send a pledge and we’ll reply with secure payment details.</p>
+<div class="card"><form class="form" data-form data-thanks="thank-you/"><input type="hidden" name="_subject" value="Donation pledge — High.School"><input class="hp" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true"><input type="hidden" id="dn-amount" name="Amount (USD)" value="15"><input type="hidden" id="dn-freq-field" name="Frequency" value="One-time">
+<div class="row2"><div class="field"><label for="p-name">Name</label><input id="p-name" name="Name" type="text" required></div><div class="field"><label for="p-email">Email</label><input id="p-email" name="Email" type="email" required></div></div>
+<div class="row2"><div class="field"><label for="p-pref">Payment preference</label><select id="p-pref" name="Payment preference"><option value="paypal">PayPal</option><option value="stripe">Card</option><option value="bmc">Buy Me a Coffee</option><option>Bank transfer / invoice</option></select></div>
+<div class="field"><label for="p-fund">Direct my gift to</label><select id="p-fund" name="Designation"><option>Where it’s needed most</option><option>Operations</option><option>Promotion & marketing</option><option>Hiring talent</option><option>Contest prizes</option></select></div></div>
+<div class="field"><label for="p-msg">Message (optional)</label><textarea id="p-msg" name="Message"></textarea></div>
+<label class="check"><input type="checkbox" name="Public recognition" value="Yes"><span>You may thank me publicly on the supporters list.</span></label>
+<label class="check"><input type="checkbox" name="Adult confirmation" value="Yes" required><span>I am 18 or older (or a parent/guardian giving on a student’s behalf).</span></label>
+<button class="btn btn-primary" type="submit">Send my pledge</button><p class="form-status" aria-live="polite"></p></form></div>
+<h2>Other ways to help</h2><div class="grid g3"><div class="card"><h3>📣 Share</h3><p>Send a tool to a friend, post it in a class group chat, or tell your counselor.</p></div><div class="card"><h3>✍️ Contribute</h3><p>Write or review a guide. <a href="../join/">Join the team</a>.</p></div><div class="card"><h3>🏢 Sponsor</h3><p>Businesses can sponsor contests and tools. <a href="../partner/">Learn more</a>.</p></div></div>
+<div class="prose"><h2 id="faq">Frequently asked questions</h2><details><summary>Is my donation tax-deductible?</summary><div><p>High.School is not currently a registered charity, so donations are not tax-deductible. They directly fund the site’s operations, content and student prizes.</p></div></details><details><summary>Can my business sponsor instead?</summary><div><p>Yes — sponsorships come with recognition on contests, tools or newsletters. See <a href='../partner/'>Advertise & Partner</a>.</p></div></details><details><summary>Can I give in another way?</summary><div><p>Absolutely: share High.School with a student or teacher, report errors, contribute a guide, or volunteer as a student ambassador.</p></div></details></div></div>
+<aside><div class="aside-sticky"><div class="aside-box"><h4>💛 Why give?</h4><p class="small">Every guide and tool on High.School is free, with no paywalls and no sign-ups. Ads cover part of the cost; supporters cover the rest and fund student prizes.</p></div><div class="aside-box"><h4>🏆 Sponsor a prize</h4><p class="small">Fund a named award in our <a href="../contests/">student contests</a>.</p></div></div></aside></div></div>
+</main>
+{% include footer.html %}
+<script src="../assets/js/site.js" defer></script><script src="../assets/js/pay-config.js" defer></script><script src="../assets/js/tools.js" defer></script>
+</body>
+</html>
